@@ -1,0 +1,6 @@
+{
+  "name": "LexiVault - Smart Vocabulary & Spaced Repetition",
+  "description": "แอปพลิเคชันคลังคำศัพท์อัจฉริยะ ตรวจจับคำศัพท์ซ้ำ พร้อมระบบ Spaced Repetition แฟลชการ์ดช่วยจำ และสถิติการเรียนรู้สะสม",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
