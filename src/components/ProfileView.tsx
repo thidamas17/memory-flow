@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   BookOpen,
   CheckCircle2,
@@ -13,8 +13,9 @@ import {
   KeyRound,
   LogOut,
   Sparkles,
-  CloudCheck,
   Check,
+  Camera,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { UserProfile, AppSettings, VocabWord } from '../types/vocab';
 
@@ -40,8 +41,58 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const [editEnglishName, setEditEnglishName] = useState(profile.englishName);
   const [editEmail, setEditEmail] = useState(profile.email);
   const [showShareToast, setShowShareToast] = useState(false);
+  const [showAvatarToast, setShowAvatarToast] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Compress & handle photo from mobile gallery
+  const processImageFile = (file: File) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const maxDim = 400; // Optimal mobile dimension
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          }
+        } else {
+          if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+          onUpdateProfile({ avatarUrl: compressedDataUrl });
+          setShowAvatarToast(true);
+          setTimeout(() => setShowAvatarToast(false), 2500);
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processImageFile(file);
+    }
+  };
 
   const handleSaveProfile = () => {
     onUpdateProfile({
@@ -69,7 +120,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
   return (
     <div className="pb-28 pt-2 px-4 max-w-md mx-auto space-y-4 animate-in fade-in duration-300">
-      {/* Toast Notice */}
+      {/* Toast Notice: Share */}
       {showShareToast && (
         <div className="fixed top-16 left-4 right-4 z-50 max-w-md mx-auto bg-[#1A146B] text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center justify-center space-x-2 text-xs">
           <Check className="w-4 h-4 text-emerald-400" />
@@ -77,20 +128,54 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         </div>
       )}
 
+      {/* Toast Notice: Avatar Updated */}
+      {showAvatarToast && (
+        <div className="fixed top-16 left-4 right-4 z-50 max-w-md mx-auto bg-[#00432D] text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center justify-center space-x-2 text-xs animate-in slide-in-from-top duration-300">
+          <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+          <span>อัปเดตรูปโปรไฟล์จากคลังภาพสำเร็จแล้ว!</span>
+        </div>
+      )}
+
+      {/* Hidden Mobile File Input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+
       {/* Hero Profile Card */}
       <div className="bg-white p-5 rounded-3xl shadow-xs border border-[#E8E1DB] text-center space-y-3.5">
-        {/* Avatar with Lightning Badge */}
+        {/* Avatar with Camera Badge & Lightning Badge */}
         <div className="relative inline-block mx-auto">
-          <div className="w-24 h-24 rounded-full overflow-hidden p-1 ring-4 ring-[#FE932C]/30 shadow-md mx-auto">
-            <img
-              src={profile.avatarUrl}
-              alt={profile.name}
-              className="w-full h-full rounded-full object-cover"
-            />
-          </div>
-          <div className="absolute bottom-0 right-1 w-6 h-6 rounded-full bg-[#D97706] text-white flex items-center justify-center shadow-md ring-2 ring-white">
-            <Zap className="w-3.5 h-3.5 fill-current" />
-          </div>
+          <label
+            onClick={() => fileInputRef.current?.click()}
+            className="cursor-pointer block relative group"
+            title="แตะเพื่อเลือกรูปโปรไฟล์จากคลังภาพมือถือ"
+          >
+            <div className="w-24 h-24 rounded-full overflow-hidden p-1 ring-4 ring-[#FE932C]/30 group-hover:ring-[#312E81] transition-all shadow-md mx-auto relative">
+              <img
+                src={profile.avatarUrl}
+                alt={profile.name}
+                className="w-full h-full rounded-full object-cover group-hover:opacity-90 transition-opacity"
+              />
+              <div className="absolute inset-1 rounded-full bg-black/35 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white transition-opacity">
+                <Camera className="w-5 h-5" />
+                <span className="text-[9px] font-bold mt-0.5">เปลี่ยนรูป</span>
+              </div>
+            </div>
+
+            {/* Lightning badge on left-bottom */}
+            <div className="absolute bottom-0 left-0 w-6 h-6 rounded-full bg-[#D97706] text-white flex items-center justify-center shadow-md ring-2 ring-white">
+              <Zap className="w-3.5 h-3.5 fill-current" />
+            </div>
+
+            {/* Camera badge on right-bottom for mobile photo selection */}
+            <div className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[#1A146B] text-white flex items-center justify-center shadow-md ring-2 ring-white hover:bg-[#312E81] active:scale-95 transition-all">
+              <Camera className="w-3.5 h-3.5" />
+            </div>
+          </label>
         </div>
 
         {/* Member Badge & Info */}
@@ -265,33 +350,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         </div>
 
         <div className="space-y-3 text-xs">
-          {/* Switch 1: Daily Spaced Repetition Reminder */}
-          <div className="flex items-center justify-between">
-            <div className="pr-2">
-              <div className="font-semibold text-[#1E1B17]">
-                แจ้งเตือนคำศัพท์ซ้ำบ่อยรายวัน
-              </div>
-              <div className="text-[11px] text-[#777682]">
-                ส่งการ์ดทบทวน Spaced Repetition ตอน 20:00 น.
-              </div>
-            </div>
-            <button
-              onClick={() => onUpdateSettings({ dailyReminder: !settings.dailyReminder })}
-              className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors cursor-pointer ${
-                settings.dailyReminder ? 'bg-[#1A146B]' : 'bg-[#E8E1DB]'
-              }`}
-            >
-              <div
-                className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
-                  settings.dailyReminder ? 'translate-x-5' : 'translate-x-0'
-                }`}
-              />
-            </button>
-          </div>
-
-          <div className="w-full h-[1px] bg-[#E8E1DB]/60" />
-
-          {/* Switch 2: Auto-pronunciation */}
+          {/* Auto-pronunciation */}
           <div className="flex items-center justify-between">
             <div className="pr-2">
               <div className="font-semibold text-[#1E1B17]">Auto-pronunciation</div>
@@ -407,6 +466,28 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-5 max-w-sm w-full space-y-3.5 shadow-xl border border-[#E8E1DB]">
             <h4 className="font-bold text-sm text-[#1E1B17]">แก้ไขข้อมูลโปรไฟล์</h4>
+
+            {/* Avatar Preview & Mobile Upload Button */}
+            <div className="flex items-center space-x-3 p-3 bg-[#FAF2EB] rounded-2xl border border-[#E8E1DB]">
+              <img
+                src={profile.avatarUrl}
+                alt={profile.name}
+                className="w-14 h-14 rounded-full object-cover ring-2 ring-[#FE932C]/50 shadow-xs shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-bold text-[#1E1B17]">รูปภาพโปรไฟล์</div>
+                <div className="text-[10px] text-[#777682] mb-1.5">รองรับรูปถ่ายจากกล้องและคลังภาพมือถือ</div>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center space-x-1.5 px-2.5 py-1 bg-[#1A146B] hover:bg-[#312E81] text-white text-[11px] font-semibold rounded-lg shadow-xs active:scale-95 transition-all cursor-pointer"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>เลือกรูปจากคลังภาพ</span>
+                </button>
+              </div>
+            </div>
+
             <div className="space-y-2 text-xs">
               <div>
                 <label className="block text-[#777682] mb-1">ชื่อภาษาไทย</label>

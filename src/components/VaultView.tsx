@@ -66,10 +66,10 @@ export const VaultView: React.FC<VaultViewProps> = ({
   });
 
   return (
-    <div className="pb-36 pt-2 px-4 max-w-md mx-auto space-y-4 animate-in fade-in duration-300">
+    <div className="pb-32 pt-1.5 px-3.5 max-w-md mx-auto space-y-3 animate-in fade-in duration-300">
       {/* Search Input Bar */}
-      <div className="relative flex items-center bg-white rounded-2xl border border-[#E8E1DB] shadow-xs px-3.5 py-2.5 focus-within:border-[#312E81] focus-within:ring-2 focus-within:ring-[#312E81]/10 transition-all">
-        <Search className="w-4 h-4 text-[#777682] shrink-0 mr-2.5" />
+      <div className="relative flex items-center bg-white rounded-xl border border-[#E8E1DB] shadow-xs px-3 py-2 focus-within:border-[#312E81] focus-within:ring-2 focus-within:ring-[#312E81]/10 transition-all">
+        <Search className="w-3.5 h-3.5 text-[#777682] shrink-0 mr-2" />
         <input
           type="text"
           value={searchQuery}
@@ -80,7 +80,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="p-1 text-[#777682] hover:text-[#1E1B17] cursor-pointer"
+            className="p-0.5 text-[#777682] hover:text-[#1E1B17] cursor-pointer"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -88,10 +88,10 @@ export const VaultView: React.FC<VaultViewProps> = ({
       </div>
 
       {/* Filter Chips Row */}
-      <div className="flex items-center space-x-2 overflow-x-auto pb-1 no-scrollbar">
+      <div className="flex items-center space-x-1.5 overflow-x-auto pb-0.5 no-scrollbar">
         <button
           onClick={() => setActiveFilter('all')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+          className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
             activeFilter === 'all'
               ? 'bg-[#1A146B] text-white shadow-xs'
               : 'bg-[#F4EDE6] text-[#474651] hover:bg-[#E8E1DB]'
@@ -102,22 +102,22 @@ export const VaultView: React.FC<VaultViewProps> = ({
 
         <button
           onClick={() => setActiveFilter('repeat')}
-          className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+          className={`flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
             activeFilter === 'repeat'
               ? 'bg-[#FE932C] text-[#663500] ring-2 ring-[#FE932C]/40 shadow-xs'
               : 'bg-[#FFDCC3]/80 text-[#904D00] hover:bg-[#FFDCC3]'
           }`}
         >
-          <span className="text-xs">🔁 ⚠️</span>
-          <span>บันทึกซ้ำ (Repeat Alert)</span>
-          <span className="px-1.5 py-0.2 rounded-full bg-[#904D00] text-white text-[10px] ml-0.5">
+          <span className="text-[11px]">🔁 ⚠️</span>
+          <span>บันทึกซ้ำ</span>
+          <span className="px-1.5 py-0.2 rounded-full bg-[#904D00] text-white text-[10px] ml-0.5 font-bold">
             {repeatDisplayCount}
           </span>
         </button>
 
         <button
           onClick={() => setActiveFilter('mastered')}
-          className={`flex items-center space-x-1 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+          className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
             activeFilter === 'mastered'
               ? 'bg-[#059669] text-white shadow-xs'
               : 'bg-[#E6F9EE] text-[#00432D] hover:bg-[#D1F2DF]'
@@ -128,7 +128,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
 
         <button
           onClick={() => setActiveFilter('review')}
-          className={`flex items-center space-x-1 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+          className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
             activeFilter === 'review'
               ? 'bg-[#E11D48] text-white shadow-xs'
               : 'bg-[#FFE4E8] text-[#9F1239] hover:bg-[#FECDD3]'
@@ -138,64 +138,64 @@ export const VaultView: React.FC<VaultViewProps> = ({
         </button>
       </div>
 
-      {/* Smart Duplicate Detection Highlight Card */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#1A146B] via-[#28227F] to-[#3B349E] text-white p-4.5 rounded-3xl shadow-md space-y-2.5">
+      {/* Smart Duplicate Detection Highlight Card (Compact) */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#1A146B] via-[#28227F] to-[#3B349E] text-white p-3.5 rounded-2xl shadow-sm space-y-1.5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center backdrop-blur-xs">
-              <Sparkles className="w-4 h-4 text-amber-300" />
+          <div className="flex items-center space-x-1.5">
+            <div className="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             </div>
-            <h3 className="font-bold text-sm tracking-tight flex items-center gap-1.5 font-display">
+            <h3 className="font-bold text-xs tracking-tight flex items-center gap-1 font-display">
               <span>🔁 ตรวจจับคำศัพท์ซ้ำอัจฉริยะ</span>
             </h3>
           </div>
-          <span className="px-2 py-0.5 bg-[#FEF08A] text-[#854D0E] font-black text-[10px] rounded-md tracking-wider">
+          <span className="px-1.5 py-0.2 bg-[#FEF08A] text-[#854D0E] font-black text-[9px] rounded tracking-wider">
             ACTIVE
           </span>
         </div>
 
-        <p className="text-xs text-indigo-100 leading-relaxed">
-          เมื่อคุณพยายามบันทึกศัพท์เดิม ระบบจะเพิ่ม <span className="font-bold text-amber-300">repeat_count</span> อัตโนมัติ โดยไม่สร้างการ์ดซ้ำซ้อน และปรับความสำคัญขึ้นคิวทบทวนให้คุณทันที!
+        <p className="text-[11px] text-indigo-100 leading-snug">
+          บันทึกศัพท์เดิมซ้ำ ระบบจะเพิ่ม <span className="font-bold text-amber-300">repeat_count</span> อัตโนมัติ โดยไม่สร้างการ์ดซ้ำซ้อน และปรับความสำคัญขึ้นคิวทบทวนทันที
         </p>
 
-        <div className="flex items-center space-x-1.5 text-[11px] text-emerald-300 font-medium pt-0.5">
-          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-          <span>ช่วยประหยัดเวลา ไม่รกคลัง และจำได้แม่นยำขึ้น 2.4 เท่า</span>
+        <div className="flex items-center space-x-1 text-[10px] text-emerald-300 font-medium">
+          <CheckCircle2 className="w-3 h-3 shrink-0" />
+          <span>ประหยัดเวลา ไม่รกคลัง จำแม่นยำขึ้น 2.4 เท่า</span>
         </div>
       </div>
 
       {/* List Header & Sorting */}
-      <div className="flex items-center justify-between pt-1">
+      <div className="flex items-center justify-between pt-0.5">
         <div className="text-xs font-bold text-[#1E1B17]">
-          รายการคำศัพท์ล่าสุด <span className="font-normal text-[#777682]">(เรียงตามการบันทึกซ้ำ)</span>
+          รายการคำศัพท์ล่าสุด <span className="font-normal text-[#777682] text-[11px]">(เรียงตามการบันทึกซ้ำ)</span>
         </div>
         <button
           onClick={() => setSortByPriority(!sortByPriority)}
           className="flex items-center space-x-1 text-xs font-semibold text-[#1A146B] hover:text-[#312E81] cursor-pointer"
         >
           <ArrowUpDown className="w-3.5 h-3.5" />
-          <span>{sortByPriority ? 'ความสำคัญ' : 'ตัวอักษร A-Z'}</span>
+          <span>{sortByPriority ? 'ความสำคัญ' : 'A-Z'}</span>
         </button>
       </div>
 
-      {/* Word Cards List */}
-      <div className="space-y-3">
+      {/* Word Cards List (Compact) */}
+      <div className="space-y-2">
         {sortedWords.map((item) => {
           const isHighRepeat = item.repeatCount >= 3;
           return (
             <div
               key={item.id}
-              className="bg-white p-4 rounded-3xl shadow-xs border border-[#E8E1DB] space-y-3 transition-all hover:border-[#C8C5D3]"
+              className="bg-white p-3 rounded-2xl shadow-xs border border-[#E8E1DB] space-y-2 transition-all hover:border-[#C8C5D3]"
             >
               {/* Top Row: Repeat or Mastered Badge + Timestamp */}
               <div className="flex items-center justify-between text-xs">
                 {item.mastered ? (
-                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-[#E6F9EE] text-[#00432D] font-bold text-[11px]">
+                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-[#E6F9EE] text-[#00432D] font-bold text-[10px]">
                     <CheckCircle2 className="w-3 h-3 text-[#059669]" />
                     <span>✓ จำได้แม่นยำ (Mastered)</span>
                   </span>
                 ) : (
-                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-[#FFDCC3] text-[#904D00] font-bold text-[11px]">
+                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-[#FFDCC3] text-[#904D00] font-bold text-[10px]">
                     <AlertTriangle className="w-3 h-3 text-[#D97706]" />
                     <span>
                       {item.repeatCount >= 4 ? '⚠️ ⚠️' : '🔁 ⚠️'} บันทึกซ้ำ {item.repeatCount} ครั้ง!
@@ -203,9 +203,9 @@ export const VaultView: React.FC<VaultViewProps> = ({
                   </span>
                 )}
 
-                <div className="flex items-center space-x-1 text-[11px] text-[#777682]">
+                <div className="flex items-center space-x-1 text-[10px] text-[#777682]">
                   {item.mastered ? (
-                    <span className="text-emerald-700 font-semibold">🎯 ความแม่นยำ {item.accuracy}%</span>
+                    <span className="text-emerald-700 font-semibold">🎯 แม่นยำ {item.accuracy}%</span>
                   ) : (
                     <>
                       <Clock className="w-3 h-3 text-[#777682]" />
@@ -218,79 +218,70 @@ export const VaultView: React.FC<VaultViewProps> = ({
               {/* Word, Part of Speech, Audio */}
               <div className="flex items-start justify-between">
                 <div>
-                  <div className="flex items-baseline space-x-2">
-                    <h4 className="text-xl font-extrabold text-[#1A146B] font-display">
+                  <div className="flex items-baseline space-x-1.5">
+                    <h4 className="text-lg font-extrabold text-[#1A146B] font-display">
                       {item.word}
                     </h4>
-                    <span className="text-xs italic text-[#777682]">
+                    <span className="text-[11px] italic text-[#777682]">
                       {item.partOfSpeech === 'adjective' ? 'adj.' : item.partOfSpeech === 'noun' ? 'noun' : item.partOfSpeech}
                     </span>
                   </div>
-                  <div className="text-xs text-[#777682] mt-0.5">{item.phonetic}</div>
+                  <div className="text-[11px] text-[#777682]">{item.phonetic}</div>
                 </div>
 
                 <button
                   onClick={() => speakWord(item.word)}
-                  className="p-2 rounded-full bg-[#F4EDE6] hover:bg-[#E2DFFF] text-[#1A146B] transition-transform active:scale-90 cursor-pointer"
+                  className="p-1.5 rounded-full bg-[#F4EDE6] hover:bg-[#E2DFFF] text-[#1A146B] transition-transform active:scale-90 cursor-pointer"
                   title="ฟังการออกเสียง"
                 >
-                  <Volume2 className="w-4 h-4" />
+                  <Volume2 className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               {/* Thai Meaning */}
-              <p className="text-xs text-[#1E1B17] font-medium leading-relaxed">
+              <p className="text-xs text-[#1E1B17] font-medium leading-snug">
                 {item.meaning}
               </p>
 
-              {/* Example Context with Visual Thumbnail */}
-              <div className="flex items-center space-x-3 p-2.5 bg-[#FAF2EB] rounded-2xl border border-[#E8E1DB]/60">
-                {item.mnemonic.imageUrl && (
-                  <img
-                    src={item.mnemonic.imageUrl}
-                    alt={item.word}
-                    className="w-12 h-12 rounded-xl object-cover shrink-0 border border-white shadow-xs"
-                  />
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="text-[10px] font-bold text-[#777682] uppercase tracking-wide">
-                    ประโยคตัวอย่าง
-                  </div>
-                  <p className="text-xs text-[#474651] truncate font-medium">
-                    {item.exampleEn}
-                  </p>
+              {/* Example Context (Compact) */}
+              <div className="p-2 bg-[#FAF2EB] rounded-xl border border-[#E8E1DB]/60">
+                <div className="text-[9px] font-bold text-[#777682] uppercase tracking-wide">
+                  ประโยคตัวอย่าง
                 </div>
+                <p className="text-[11px] text-[#474651] font-medium leading-snug">
+                  "{item.exampleEn}"
+                </p>
               </div>
 
               {/* Footer Priority and History */}
-              <div className="flex items-center justify-between text-xs pt-0.5 border-t border-[#E8E1DB]/60">
-                <div className="flex items-center space-x-1.5">
+              <div className="flex items-center justify-between text-[11px] pt-0.5 border-t border-[#E8E1DB]/60">
+                <div className="flex items-center space-x-1">
                   {item.mastered ? (
-                    <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="font-semibold text-emerald-700 flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                       <span>{item.priorityLabel}</span>
                     </span>
                   ) : isHighRepeat ? (
-                    <span className="text-xs font-semibold text-[#BA1A1A] flex items-center gap-1">
-                      <AlertTriangle className="w-3.5 h-3.5 text-[#BA1A1A]" />
-                      <span>Priority: {item.priorityLabel}</span>
+                    <span className="font-semibold text-[#BA1A1A] flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3 text-[#BA1A1A]" />
+                      <span>{item.priorityLabel}</span>
                     </span>
                   ) : (
-                    <span className="text-xs font-semibold text-[#904D00] flex items-center gap-1">
-                      <TrendingUp className="w-3.5 h-3.5 text-[#D97706]" />
-                      <span>Priority: {item.priorityLabel}</span>
+                    <span className="font-semibold text-[#904D00] flex items-center gap-1">
+                      <TrendingUp className="w-3 h-3 text-[#D97706]" />
+                      <span>{item.priorityLabel}</span>
                     </span>
                   )}
                 </div>
 
                 <button
                   onClick={() => setSelectedWordForHistory(item)}
-                  className="text-xs font-semibold text-[#312E81] hover:underline flex items-center space-x-0.5 cursor-pointer"
+                  className="font-semibold text-[#312E81] hover:underline flex items-center space-x-0.5 cursor-pointer"
                 >
                   <span>
                     {item.mastered
-                      ? `สถิติการตอบ (${item.correctCount}/${item.reviewCount})`
-                      : `ดูประวัติบันทึก (${item.repeatCount})`}
+                      ? `สถิติ (${item.correctCount}/${item.reviewCount})`
+                      : `ประวัติ (${item.repeatCount})`}
                   </span>
                   <span>&gt;</span>
                 </button>
@@ -301,24 +292,8 @@ export const VaultView: React.FC<VaultViewProps> = ({
       </div>
 
       {/* Floating Prompt Bar (Bottom Actionable Card) */}
-      <div className="fixed bottom-20 left-4 right-4 max-w-md mx-auto space-y-2 z-30">
-        {/* Yellow Prompt Card */}
-        <div className="p-3 bg-[#FFFBEB] border border-[#FDE68A] rounded-2xl shadow-sm flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-base">⏰</span>
-            <div className="text-xs text-[#92400E] font-medium leading-tight">
-              <span className="font-bold">พบ 6 คำที่มักบันทึกซ้ำ</span> พร้อมจัดเซสชันพิเศษ 5 นาทีเพื่อความจำ...
-            </div>
-          </div>
-          <button
-            onClick={() => onStartReviewSession('repeat')}
-            className="px-3 py-1 rounded-xl bg-[#065F46] text-white text-xs font-bold hover:bg-[#047857] shrink-0 cursor-pointer shadow-xs active:scale-95"
-          >
-            เริ่มเลย
-          </button>
-        </div>
-
-        {/* Orange / Dark Accent Bottom Action */}
+      <div className="fixed bottom-20 left-4 right-4 max-w-md mx-auto z-30">
+        {/* Dark Accent Bottom Action */}
         <div className="p-2.5 bg-white border border-[#E8E1DB] rounded-2xl shadow-lg flex items-center justify-between">
           <div className="flex items-center space-x-2 pl-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#D97706]"></span>

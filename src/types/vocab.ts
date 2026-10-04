@@ -1,9 +1,9 @@
 export type PartOfSpeech = 'adjective' | 'noun' | 'verb' | 'adverb';
 
 export interface VisualMnemonic {
-  enabled: boolean;
-  imageUrl: string;
-  caption: string;
+  enabled?: boolean;
+  imageUrl?: string;
+  caption?: string;
 }
 
 export interface VocabWord {
@@ -17,7 +17,7 @@ export interface VocabWord {
   exampleTh: string;
   cefr: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
   language: 'en-th' | 'ja-th' | 'zh-th';
-  mnemonic: VisualMnemonic;
+  mnemonic?: VisualMnemonic;
   repeatCount: number; // e.g., 1 (normal), 3, 4 (repeatedly saved)
   mastered: boolean;
   accuracy: number; // e.g. 98%
