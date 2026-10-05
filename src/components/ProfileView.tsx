@@ -149,9 +149,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       <div className="bg-white p-5 rounded-3xl shadow-xs border border-[#E8E1DB] text-center space-y-3.5">
         {/* Avatar with Camera Badge & Lightning Badge */}
         <div className="relative inline-block mx-auto">
-          <label
+          <button
+            type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="cursor-pointer block relative group"
+            className="cursor-pointer block relative group text-left p-0 border-0 bg-transparent"
             title="แตะเพื่อเลือกรูปโปรไฟล์จากคลังภาพมือถือ"
           >
             <div className="w-24 h-24 rounded-full overflow-hidden p-1 ring-4 ring-[#FE932C]/30 group-hover:ring-[#312E81] transition-all shadow-md mx-auto relative">
@@ -175,7 +176,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[#1A146B] text-white flex items-center justify-center shadow-md ring-2 ring-white hover:bg-[#312E81] active:scale-95 transition-all">
               <Camera className="w-3.5 h-3.5" />
             </div>
-          </label>
+          </button>
         </div>
 
         {/* Member Badge & Info */}

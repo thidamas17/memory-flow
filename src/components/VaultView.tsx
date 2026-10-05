@@ -34,7 +34,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
   // Compute stats
   const totalCount = 184; // Canonical stat shown in design
   const repeatCountItems = vocabList.filter((w) => w.repeatCount > 1);
-  const repeatDisplayCount = 6; // Badge shows 6 repeat alert words in screenshot
+  const repeatDisplayCount = repeatCountItems.length;
 
   // Filter words
   const filteredWords = vocabList.filter((item) => {
@@ -298,7 +298,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
           <div className="flex items-center space-x-2 pl-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#D97706]"></span>
             <div className="text-xs font-bold text-[#1E1B17]">
-              ต้องการการทบทวน: <span className="text-[#904D00]">6 คำซ้ำที่ยังสับสน</span>
+              ต้องการการทบทวน: <span className="text-[#904D00]">{repeatDisplayCount} คำซ้ำที่ยังสับสน</span>
             </div>
           </div>
           <button
@@ -344,10 +344,10 @@ export const VaultView: React.FC<VaultViewProps> = ({
               <div className="space-y-1.5">
                 <span className="text-xs font-bold text-[#1E1B17]">บันทึกล่าสุด:</span>
                 <ul className="space-y-1 pl-2">
-                  {selectedWordForHistory.historyDates.map((date, idx) => (
+                  {(selectedWordForHistory.historyDates || []).map((date, idx) => (
                     <li key={idx} className="flex items-center space-x-2 text-[11px] text-[#474651]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#312E81]"></span>
-                      <span>บันทึกครั้งที่ {selectedWordForHistory.historyDates.length - idx}: {date}</span>
+                      <span>บันทึกครั้งที่ {(selectedWordForHistory.historyDates || []).length - idx}: {date}</span>
                     </li>
                   ))}
                 </ul>

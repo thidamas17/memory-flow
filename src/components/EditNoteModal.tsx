@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, FileEdit, Check } from 'lucide-react';
 import { VocabWord } from '../types/vocab';
 
@@ -17,6 +17,13 @@ export const EditNoteModal: React.FC<EditNoteModalProps> = ({
 
   const [meaning, setMeaning] = useState(word.meaning);
   const [notes, setNotes] = useState(word.notes || '');
+
+  useEffect(() => {
+    if (word) {
+      setMeaning(word.meaning);
+      setNotes(word.notes || '');
+    }
+  }, [word]);
 
   const handleSave = () => {
     onSave({

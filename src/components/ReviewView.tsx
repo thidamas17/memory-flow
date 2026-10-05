@@ -55,7 +55,7 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
     return list;
   }, [vocabList, filter]);
 
-  const currentWord = deck[currentIndex % Math.max(1, deck.length)] || vocabList[0];
+  const currentWord = deck.length > 0 ? deck[currentIndex % deck.length] : vocabList[0];
 
   // Auto flip reset when moving to next card
   useEffect(() => {
@@ -63,6 +63,7 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
   }, [currentIndex]);
 
   const handleFlip = () => {
+    if (!currentWord) return;
     setIsFlipped(!isFlipped);
   };
 
@@ -74,7 +75,7 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
   };
 
   const handleDecision = (remembered: boolean) => {
-    if (!currentWord) return;
+    if (!currentWord || deck.length === 0) return;
 
     if (remembered) {
       setMasteredToday((prev) => prev + 1);
@@ -88,18 +89,20 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
     // Smooth transition to next card
     setIsFlipped(false);
     setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % deck.length);
+      setCurrentIndex((prev) => (deck.length > 0 ? (prev + 1) % deck.length : 0));
     }, 150);
   };
 
   const handleShuffle = () => {
     setIsFlipped(false);
+    if (deck.length <= 1) return;
     const randomIndex = Math.floor(Math.random() * deck.length);
     setCurrentIndex(randomIndex);
   };
 
   const handleSkip = () => {
     setIsFlipped(false);
+    if (deck.length <= 1) return;
     setCurrentIndex((prev) => (prev + 1) % deck.length);
   };
 
@@ -198,7 +201,21 @@ export const ReviewView: React.FC<ReviewViewProps> = ({
         </div>
 
         {/* Card Content: Front or Back */}
-        {!isFlipped ? (
+        {!currentWord ? (
+          <div className="my-auto py-8 text-center space-y-2">
+            <span className="text-3xl">🎉</span>
+            <div className="text-sm font-bold text-[#1E1B17]">ไม่มีคำศัพท์ในหมวดหมู่นี้</div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setFilter('all');
+              }}
+              className="text-xs text-[#1A146B] underline font-semibold cursor-pointer"
+            >
+              ดูคำศัพท์ทั้งหมดในคลัง
+            </button>
+          </div>
+        ) : !isFlipped ? (
           /* FRONT SIDE */
           <div className="my-auto py-3 text-center space-y-2.5">
             {/* Word & Phonetic */}

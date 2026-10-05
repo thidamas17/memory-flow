@@ -25,7 +25,20 @@ export default function App() {
   const [vocabList, setVocabList] = useState<VocabWord[]>(() => {
     try {
       const saved = localStorage.getItem('lexivault_words');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item) => ({
+            ...item,
+            historyDates: Array.isArray(item.historyDates) ? item.historyDates : ['วันนี้'],
+            repeatCount: typeof item.repeatCount === 'number' ? item.repeatCount : 1,
+            reviewCount: typeof item.reviewCount === 'number' ? item.reviewCount : 0,
+            correctCount: typeof item.correctCount === 'number' ? item.correctCount : 0,
+            accuracy: typeof item.accuracy === 'number' ? item.accuracy : 50,
+            mnemonic: item.mnemonic || { enabled: false, imageUrl: '', caption: '' },
+          }));
+        }
+      }
     } catch {
       // fallback
     }
@@ -35,7 +48,15 @@ export default function App() {
   const [profile, setProfile] = useState<UserProfile>(() => {
     try {
       const saved = localStorage.getItem('lexivault_profile');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          return {
+            ...initialProfile,
+            ...parsed,
+          };
+        }
+      }
     } catch {}
     return initialProfile;
   });
@@ -43,7 +64,15 @@ export default function App() {
   const [settings, setSettings] = useState<AppSettings>(() => {
     try {
       const saved = localStorage.getItem('lexivault_settings');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') {
+          return {
+            ...initialSettings,
+            ...parsed,
+          };
+        }
+      }
     } catch {}
     return initialSettings;
   });
@@ -79,11 +108,11 @@ export default function App() {
           if (item.word.toLowerCase() === word.word.toLowerCase()) {
             return {
               ...item,
-              repeatCount: item.repeatCount + 1,
+              repeatCount: (item.repeatCount || 1) + 1,
               priority: 'high',
               priorityLabel: 'สูงมาก (ทบทวนทุกวัน)',
               lastSavedText: 'เมื่อสักครู่',
-              historyDates: ['เมื่อสักครู่', ...item.historyDates],
+              historyDates: ['เมื่อสักครู่', ...(item.historyDates || [])],
               nextReviewDays: 1,
             };
           }

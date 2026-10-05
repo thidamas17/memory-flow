@@ -124,7 +124,7 @@ export const AddWordView: React.FC<AddWordViewProps> = ({
           : 'ปานกลาง (ทบทวนทุก 3 วัน)',
       lastSavedText: 'เมื่อสักครู่',
       historyDates: existingWord
-        ? ['เมื่อสักครู่', ...existingWord.historyDates]
+        ? ['เมื่อสักครู่', ...(existingWord.historyDates || [])]
         : ['วันนี้'],
       nextReviewDays: 1,
       reviewCount: existingWord ? existingWord.reviewCount : 0,
